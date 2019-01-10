@@ -8,3 +8,12 @@ a, strong{
 h1, h2, h3, h4, h5{
 	font-size: 25px;
 }
+
+.page p{
+  font-size: 25px !important;
+	text-decoration: none !important;
+}
+a{
+  text-decoration: none;
+  pointer-events: none;
+}

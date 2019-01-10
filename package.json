@@ -1,11 +1,22 @@
 {
   "name": "doc-searcher",
   "version": "1.0.0",
-  "description": "",
+  "description": "A tool for quickly searching through block files.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chen-robert/doc-searcher.git"
+  },
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "author": "Robert Chen",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "compression": "^1.7.3",
+    "express": "^4.16.4",
+    "mammoth": "^1.4.7",
+    "pdf2html": "^2.4.0"
+  }
 }
