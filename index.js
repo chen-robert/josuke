@@ -30,15 +30,17 @@ const explore = folder => {
     }
   });
 }
-explore(docs);
-
 
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const app = express();
 const PORT = process.env.PORT || 4000;
 
 const compression = require("compression");
 app.use(compression());
+app.use(cookieParser());
+app.use(express.static("public"));
 
-app.get("/", (req, res) => fs.readFile("style.css", "utf8", (err, css) => res.send(`<style>${css}</style>${htmlSegments.join("")}`)));
+app.post("/upload", (req, res) => console.log("HI") || res.send("HI"));
+
 app.listen(PORT, () => console.log(`Started server at port ${PORT}`));

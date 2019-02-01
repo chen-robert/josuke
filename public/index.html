@@ -1,0 +1,15 @@
+<body>
+  <script src="dropzone.js"></script>
+  <link rel="stylesheet" href="dropzone.css">
+  <h1>Hello</h1>
+  <form id="dropzone" class="dropzone"></form>
+  <script>
+    var myDropzone = new Dropzone(
+          "#dropzone",
+          {
+              url: "/upload", 
+              paramName: "file"
+          }
+    );
+  </script>
+</body>
