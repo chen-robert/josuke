@@ -1,15 +1,35 @@
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
 <body>
-  <script src="dropzone.js"></script>
-  <link rel="stylesheet" href="dropzone.css">
-  <h1>Hello</h1>
-  <form id="dropzone" class="dropzone"></form>
   <script>
-    var myDropzone = new Dropzone(
-          "#dropzone",
-          {
-              url: "/upload", 
-              paramName: "file"
-          }
-    );
+    $.get("/data", data => {
+      const el = document.createElement("div");
+      el.innerHTML = data;
+
+      window.el = el;
+
+      const children = Array.from(el.children);
+      const tags = children.filter(a => a.tagName !== "P");
+      
+      const clean = text => text.split("T.").join("<br>T.")      
+      const build = name => {
+        document.body.insertAdjacentHTML(
+          "beforeend",
+`
+<h3>${name}</h3>
+${tags
+  .filter(a => a.innerText.toLowerCase().includes(name.toLowerCase()))
+  .map(a => `<p>${clean(a.innerText)}</p>`).join("")}
+`
+        );
+      };
+      build("Yemen");
+      build("Oil");
+
+      window.build = build;
+    });
+
+
   </script>
 </body>

@@ -71,6 +71,9 @@ app.get("/data", (req, res) => {
       }
     });
   };
+  explore(`uploads/${req.cookies.userid}`);
+
+  Promise.all(promises).then(() => res.send(htmlSegments.join("")));
 });
 
 app.listen(PORT, () => console.log(`Started server at port ${PORT}`));
