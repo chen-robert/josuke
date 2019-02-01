@@ -33,14 +33,31 @@ const explore = folder => {
 
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const fileUpload = require("express-fileupload");
+const uuid = require("uuid/v4");
 const app = express();
 const PORT = process.env.PORT || 4000;
 
 const compression = require("compression");
 app.use(compression());
+app.use(fileUpload({
+  limits: {
+    fileSize: 50 * 1024 * 1024
+  }
+}));
 app.use(cookieParser());
+app.use((req, res, next) => {
+  if(req.cookies.userid === undefined){
+    res.cookie("userid", uuid(), { maxAge: 900000, httpOnly: true });
+  } 
+  next(); 
+});
+
 app.use(express.static("public"));
 
-app.post("/upload", (req, res) => console.log("HI") || res.send("HI"));
+app.post("/upload", (req, res) => {
+  console.log(req.files.file);
+  console.log(req.cookies.userid);
+});
 
 app.listen(PORT, () => console.log(`Started server at port ${PORT}`));
