@@ -26,13 +26,15 @@
     .subtext-container{
       max-height: 25vh;
       overflow-y: auto;
-      box-shadow: 5px 5px 5px rgba(68, 68, 68, 0.6);
-      background-color: #eee;
-      margin: 20px;
-      padding: 20px;
       
       overflow-wrap: break-word;
     }
+    .subtext-wrapper{
+      margin: 20px;
+      padding: 20px;
+      border: 1px solid #ccc;
+    }
+
     
     .section-title{
       font-size: 25px;
@@ -43,6 +45,10 @@
       line-height: 25px;
       padding: 0 20px;
       display: inline-block;
+      box-shadow: 5px 5px 5px rgba(68, 68, 68, 0.6);
+      background-color: #eee;
+      margin: 20px;
+      padding: 20px;
     }
     
   </style>
@@ -80,9 +86,11 @@
       <strong class="tag">${a.innerText.split("T.").join("<br>T.")}</strong>
       ${ a.children.length === 0? "<br>": 
       `
-      <div class="subtext-container">
-        ${a.children.map(subText).join("")}
-      </div>
+      <section class="subtext-wrapper">
+        <div class="subtext-container">
+          ${a.children.map(subText).join("")}
+        </div>
+      </section>
       `
       }
       `;
