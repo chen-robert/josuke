@@ -10,9 +10,22 @@
       window.el = el;
 
       const children = Array.from(el.children);
-      const tags = children.filter(a => a.tagName !== "P");
+      const tags = [];
+
+      let curr = {innerText: "", children: []};
+      for(let i = 0; i < children.length; i++){
+        const a = children[i];
+        if(a.tagName !== "P"){
+          tags.push(curr);
+          curr = {innerText: a.innerText, children: []};
+        }else{
+          curr.children.push(a);
+        }
+      }
+      tags.push(curr);
       
-      const clean = text => text.split("T.").join("<br>T.")      
+      const clean = text => text.split("T.").join("<br>T.");
+      const subText = a => `<p>${a.innerText}</p>`;
       const build = name => {
         document.body.insertAdjacentHTML(
           "beforeend",
@@ -20,7 +33,7 @@
 <h3>${name}</h3>
 ${tags
   .filter(a => a.innerText.toLowerCase().includes(name.toLowerCase()))
-  .map(a => `<p>${clean(a.innerText)}</p>`).join("")}
+  .map(a => `<strong>${clean(a.innerText)}</strong>${a.children.map(subText)}`).join("")}
 `
         );
       };

@@ -25,7 +25,7 @@ app.use(
 app.use(cookieParser());
 app.use((req, res, next) => {
   if (req.cookies.userid === undefined) {
-    res.cookie("userid", uuid(), { maxAge: 900000, httpOnly: true });
+    res.cookie("userid", uuid(), { maxAge: 365 * 24 * 60 * 60 * 1000, httpOnly: true });
   }
   next();
 });
