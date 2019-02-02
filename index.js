@@ -7,7 +7,6 @@ const fs = require("fs");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const fileUpload = require("express-fileupload");
-const uuid = require("uuid/v4");
 const app = express();
 const PORT = process.env.PORT || 4000;
 
@@ -23,12 +22,8 @@ app.use(
   })
 );
 app.use(cookieParser());
-app.use((req, res, next) => {
-  if (req.cookies.userid === undefined) {
-    res.cookie("userid", uuid(), { maxAge: 365 * 24 * 60 * 60 * 1000, httpOnly: true });
-  }
-  next();
-});
+
+app.use(require(__dirname + "/src/auth.js"));
 
 app.use(express.static("public"));
 
