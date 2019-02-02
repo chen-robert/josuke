@@ -35,40 +35,50 @@ app.post("/upload", (req, res) => {
     `${__dirname}/uploads/${req.cookies.userid}/${file.md5()}_${file.name}`
   );
   res.sendStatus(200);
+  
+  cached[req.cookies.userid] = [];
 });
 
-app.get("/data", (req, res) => {
-  var promises = [];
-  var htmlSegments = [];
-  const explore = folder => {
-    fs.readdirSync(folder).forEach(file => {
-      const fullPath = `${folder}/${file}`;
 
-      if (fs.lstatSync(fullPath).isDirectory()) {
-        explore(fullPath);
-      } else {
-        if (file.endsWith(".docx")) {
-          promises.push(
-            mammoth.convertToHtml({ path: fullPath }).then(function(result) {
-              var html = result.value; // The generated HTML
+const cached = {};
+app.get("/data", (req, res) => {  
+  if(cached[req.cookies.userid] === undefined) cached[req.cookies.userid] = [];
+  
+  const htmlSegments = cached[req.cookies.userid];
+  if(cached[req.cookies.userid].length === 0){
+    const promises = [];
+    const explore = folder => {
+      fs.readdirSync(folder).forEach(file => {
+        const fullPath = `${folder}/${file}`;
+
+        if (fs.lstatSync(fullPath).isDirectory()) {
+          explore(fullPath);
+        } else {
+          if (file.endsWith(".docx")) {
+            promises.push(
+              mammoth.convertToHtml({ path: fullPath }).then(function(result) {
+                var html = result.value; // The generated HTML
+                htmlSegments.push(html);
+                console.log(`Loaded ${fullPath}`);
+              })
+            );
+          } else if (file.endsWith(".pdf")) {
+            pdf2html.html(`"${fullPath}"`, (err, html) => {
+              if (err) return console.log(fullPath, err);
+              return;
               htmlSegments.push(html);
               console.log(`Loaded ${fullPath}`);
-            })
-          );
-        } else if (file.endsWith(".pdf")) {
-          pdf2html.html(`"${fullPath}"`, (err, html) => {
-            if (err) return console.log(fullPath, err);
-            return;
-            htmlSegments.push(html);
-            console.log(`Loaded ${fullPath}`);
-          });
+            });
+          }
         }
-      }
-    });
-  };
-  explore(`uploads/${req.cookies.userid}`);
+      });
+    };
+    explore(`uploads/${req.cookies.userid}`);
 
-  Promise.all(promises).then(() => res.send(htmlSegments.join("")));
+    Promise.all(promises).then(() => res.send(htmlSegments.join("")));
+  }else{
+    res.send(htmlSegments.join(""));
+  }
 });
 
 app.listen(PORT, () => console.log(`Started server at port ${PORT}`));
