@@ -1,12 +1,50 @@
 <head>
+  <title>Block Maker</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
+  <a class="doc-title" href="/upload.html">Upload Blocks First</a>
+  <input id="searcher" onkeypress="search(this)" placeholder="Enter tagline">
+  <p id="loading">Loading... Please wait!</p>
   <style>
+    #searcher{
+      width: 100%;
+      padding: 5px;
+    }
+  
+    .doc-title{
+      margin: 25px;
+      text-align: center;
+      display: block;
+    }
+  
     .subclass{
       font-size: 12px;
       margin: 0;
     }
+    
+    .subtext-container{
+      max-height: 25vh;
+      overflow-y: auto;
+      box-shadow: 5px 5px 5px rgba(68, 68, 68, 0.6);
+      background-color: #eee;
+      margin: 20px;
+      padding: 20px;
+      
+      overflow-wrap: break-word;
+    }
+    
+    .section-title{
+      font-size: 25px;
+      text-align: center;
+    }
+    
+    .tag{
+      line-height: 25px;
+      padding: 0 20px;
+      display: inline-block;
+    }
+    
   </style>
   <script>
     $.get("/data", data => {
@@ -30,32 +68,47 @@
       }
       tags.push(curr);
       
-      const clean = text => text.split("T.").join("<br>T.");
       
       const subText = a => {
         let text = a.innerText;
         text = text.replace(/((www\.|https?:\/\/)[^\s]+)/g, "<a href='$1'>$1</a>");
-        console.log(text);
         
         return `<p class="subtext">${text}</p>`;
-        
+      }
+      const buildTag = a => {
+      return `
+      <strong class="tag">${a.innerText.split("T.").join("<br>T.")}</strong>
+      ${ a.children.length === 0? "<br>": 
+      `
+      <div class="subtext-container">
+        ${a.children.map(subText).join("")}
+      </div>
+      `
+      }
+      `;
       }
       const build = name => {
         document.body.insertAdjacentHTML(
           "beforeend",
 `
-<h3>${name}</h3>
+<h3 class="section-title">${name}</h3>
 ${tags
   .filter(a => a.innerText.toLowerCase().includes(name.toLowerCase()))
-  .map(a => `<strong>${clean(a.innerText)}</strong>${a.children.map(subText).join("")}`).join("")}
+  .map(buildTag).join("")}
 `
         );
       };
-      build("Yemen");
-      build("Oil");
-
       window.build = build;
+      $("#loading").hide();
     });
+    
+    const search = elem => {
+      if(event.keyCode === 13){
+        if(elem.value.trim() === "")return;
+        build(elem.value);
+        elem.value = ""
+      }
+    };
 
 
   </script>
