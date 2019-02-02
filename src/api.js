@@ -18,7 +18,8 @@ router.post("/upload", (req, res) => {
   .catch(err => console.log(err));
   res.sendStatus(200);
   
-  fs.unlink(cachedTemplate(userid));
+  const cachedFile = cachedTemplate(userid);
+  if(fs.existsSync(cachedFile)) fs.unlink(cachedFile);
 });
 
 router.get("/data", (req, res) => {  
