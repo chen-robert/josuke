@@ -1,3 +1,5 @@
+const secret = process.env.DOC_SECRET || "alessia cara";
+
 const mammoth = require("mammoth");
 const pdf2html = require("pdf2html");
 
@@ -21,7 +23,7 @@ app.use(
     }
   })
 );
-app.use(cookieParser());
+app.use(cookieParser(secret));
 
 app.use(require(__dirname + "/src/auth.js"));
 
@@ -29,23 +31,25 @@ app.use(express.static("public"));
 
 app.post("/upload", (req, res) => {
   const file = req.files.file;
+  const userid = req.signedCookies.userid;
   if (file === undefined) return;
 
   file.mv(
-    `${__dirname}/uploads/${req.cookies.userid}/${file.md5()}_${file.name}`
+    `${__dirname}/uploads/${userid}/${file.md5()}_${file.name}`
   );
   res.sendStatus(200);
   
-  cached[req.cookies.userid] = [];
+  cached[userid] = [];
 });
 
 
 const cached = {};
 app.get("/data", (req, res) => {  
-  if(cached[req.cookies.userid] === undefined) cached[req.cookies.userid] = [];
+  const userid = req.signedCookies.userid;
+  if(cached[userid] === undefined) cached[userid] = [];
   
-  const htmlSegments = cached[req.cookies.userid];
-  if(cached[req.cookies.userid].length === 0){
+  const htmlSegments = cached[userid];
+  if(cached[userid].length === 0){
     const promises = [];
     const explore = folder => {
       fs.readdirSync(folder).forEach(file => {
@@ -73,12 +77,12 @@ app.get("/data", (req, res) => {
         }
       });
     };
-    explore(`uploads/${req.cookies.userid}`);
+    explore(`uploads/${userid}`);
 
     Promise.all(promises).then(() => res.send(htmlSegments.join("")));
   }else{
     res.send(htmlSegments.join(""));
   }
 });
-
+app.get("/upload", (req, res) => res.sendFile(__dirname + "/public/upload.html"));
 app.listen(PORT, () => console.log(`Started server at port ${PORT}`));

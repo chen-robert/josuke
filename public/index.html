@@ -1,57 +1,15 @@
 <head>
   <title>Block Maker</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Lato|Roboto" rel="stylesheet">
+  <link rel="stylesheet" href="main.css">
 </head>
 <body>
-  <a class="doc-title" href="/upload.html">Upload Blocks First</a>
+  <a class="doc-title" href="/upload">
+    <button>Upload Files</button>
+  </a>
   <input id="searcher" onkeypress="search(this)" placeholder="Enter tagline">
   <p id="loading">Loading... Please wait!</p>
-  <style>
-    #searcher{
-      width: 100%;
-      padding: 5px;
-    }
-  
-    .doc-title{
-      margin: 25px;
-      text-align: center;
-      display: block;
-    }
-  
-    .subclass{
-      font-size: 12px;
-      margin: 0;
-    }
-    
-    .subtext-container{
-      max-height: 25vh;
-      overflow-y: auto;
-      
-      overflow-wrap: break-word;
-    }
-    .subtext-wrapper{
-      margin: 20px;
-      padding: 20px;
-      border: 1px solid #ccc;
-    }
-
-    
-    .section-title{
-      font-size: 25px;
-      text-align: center;
-    }
-    
-    .tag{
-      line-height: 25px;
-      padding: 0 20px;
-      display: inline-block;
-      box-shadow: 5px 5px 5px rgba(68, 68, 68, 0.6);
-      background-color: #eee;
-      margin: 20px;
-      padding: 20px;
-    }
-    
-  </style>
   <script>
     $.get("/data", data => {
       const el = document.createElement("div");
@@ -99,7 +57,7 @@
         document.body.insertAdjacentHTML(
           "beforeend",
 `
-<h3 class="section-title">${name}</h3>
+<h3 id="section-${name}" class="section-title">${name}</h3>
 ${tags
   .filter(a => a.innerText.toLowerCase().includes(name.toLowerCase()))
   .map(buildTag).join("")}
@@ -112,9 +70,12 @@ ${tags
     
     const search = elem => {
       if(event.keyCode === 13){
-        if(elem.value.trim() === "")return;
-        build(elem.value);
-        elem.value = ""
+        const query = elem.value;
+        elem.value = "";
+        if(query.trim() === "")return;
+        build(query);
+        
+        location.hash = `#section-${query}`;
       }
     };
 

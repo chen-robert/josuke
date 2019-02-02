@@ -1,0 +1,55 @@
+body {
+  font-family: "Lato", sans-serif;
+}
+* {
+  font-family: inherit;
+}
+#searcher{
+  width: 100%;
+  padding: 5px;
+}
+
+.doc-title{
+  margin: 35px;
+  text-align: center;
+  display: block;
+}
+
+.doc-title > button{
+  padding: 10px 24px;
+}
+
+.subclass{
+  font-size: 12px;
+  margin: 0;
+}
+
+.subtext-container{
+  max-height: 25vh;
+  overflow-y: auto;
+  
+  overflow-wrap: break-word;
+  font-family: "Roboto", sans-serif;
+}
+
+.subtext-wrapper{
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+.section-title{
+  font-size: 25px;
+  text-align: center;
+}
+
+.tag{
+  line-height: 25px;
+  padding: 0 20px;
+  display: inline-block;
+  box-shadow: 5px 5px 5px rgba(68, 68, 68, 0.6);
+  background-color: #eee;
+  margin: 20px;
+  padding: 20px;
+}
+    
