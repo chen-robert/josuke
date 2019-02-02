@@ -1,5 +1,9 @@
+# Nodejs
 node_modules
-docs
-uploads
 
+# Application Data
+uploads
+cache
+
+# VIM
 *.swp
