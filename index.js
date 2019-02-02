@@ -9,7 +9,9 @@ const fs = require("fs");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const fileUpload = require("express-fileupload");
+
 const app = express();
+app.set("view engine", "ejs");
 const PORT = process.env.PORT || 4000;
 
 const compression = require("compression");
@@ -84,6 +86,8 @@ app.get("/data", (req, res) => {
     res.send(htmlSegments.join(""));
   }
 });
-app.get("/upload", (req, res) => res.sendFile(__dirname + "/public/upload.html"));
-app.get("/about", (req, res) => res.sendFile(__dirname + "/public/about.html"));
+
+app.get("/", (req, res) => res.render("pages/index"));
+app.get("/upload", (req, res) => res.render("pages/upload"));
+app.get("/about", (req, res) => res.render("pages/about"));
 app.listen(PORT, () => console.log(`Started server at port ${PORT}`));

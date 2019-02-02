@@ -1,22 +1,8 @@
 <head>
-  <title>Josuke</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <link href="https://fonts.googleapis.com/css?family=Lato|Roboto" rel="stylesheet">
-  <link rel="stylesheet" href="main.css">
-  <link rel="stylesheet" href="navbar.css">
+  <% include ../partials/head %>
 </head>
 <body>
-  <nav class="navbar">
-    <a class="navbar--link" href="/about" target="_blank">
-      About
-    </a>
-    <a class="navbar--link" href="/upload" target="_blank">
-      Upload
-    </a>
-    <a class="navbar--link" href="/" target="_blank">
-      Search
-    </a>
-  </nav>
+  <% include ../partials/navbar %>
   <input id="searcher" onkeypress="search(this)" placeholder="Enter tagline">
   <p id="loading">Loading... Please wait!</p>
   <script>

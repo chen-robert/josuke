@@ -1,22 +1,10 @@
 <head>
-  <title>Josuke</title>
-  <link rel="stylesheet" href="main.css">
-  <link rel="stylesheet" href="navbar.css">
+  <% include ../partials/head %>
   <link rel="stylesheet" href="dropzone.css">
   <script src="dropzone.js"></script>
 </head>
 <body>
-  <nav class="navbar">
-    <a class="navbar--link" href="/about" target="_blank">
-      About
-    </a>
-    <a class="navbar--link" href="/upload" target="_blank">
-      Upload
-    </a>
-    <a class="navbar--link" href="/" target="_blank">
-      Search
-    </a>
-  </nav>
+  <% include ../partials/navbar %>
   <h1 class="doc-title">Upload Files</h1>
   <form id="dropzone" class="dropzone"></form>
   <script>
