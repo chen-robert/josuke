@@ -5,58 +5,60 @@ const pdf2html = require("pdf2html");
 const express = require("express");
 const router = express.Router();
 
+
+const cachedTemplate = userid => `${__rootdir}/cache/${userid}`;
 router.post("/upload", (req, res) => {
   const file = req.files.file;
   const userid = req.signedCookies.userid;
   if (file === undefined) return;
 
   file.mv(
-    `${__dirname}/uploads/${userid}/${file.md5()}_${file.name}`
-  );
+    `${__rootdir}/uploads/${userid}/${file.md5()}_${file.name}`
+  )
+  .catch(err => console.log(err));
   res.sendStatus(200);
   
-  cached[userid] = [];
+  fs.unlink(cachedTemplate(userid));
 });
 
-const cached = {};
 router.get("/data", (req, res) => {  
-  const userid = req.signedCookies.userid;
-  if(cached[userid] === undefined) cached[userid] = [];
+  const userid = req.signedCookies.userid;  
+  const cachedFile = cachedTemplate(userid);
   
-  const htmlSegments = cached[userid];
-  if(cached[userid].length === 0){
-    const promises = [];
-    const explore = folder => {
-      fs.readdirSync(folder).forEach(file => {
-        const fullPath = `${folder}/${file}`;
-
-        if (fs.lstatSync(fullPath).isDirectory()) {
-          explore(fullPath);
-        } else {
-          if (file.endsWith(".docx")) {
-            promises.push(
-              mammoth.convertToHtml({ path: fullPath }).then(function(result) {
-                var html = result.value; // The generated HTML
-                htmlSegments.push(html);
-                console.log(`Loaded ${fullPath}`);
-              })
-            );
-          } else if (file.endsWith(".pdf")) {
-            pdf2html.html(`"${fullPath}"`, (err, html) => {
-              if (err) return console.log(fullPath, err);
-              return;
-              htmlSegments.push(html);
-              console.log(`Loaded ${fullPath}`);
-            });
-          }
-        }
-      });
-    };
-    explore(`uploads/${userid}`);
-
-    Promise.all(promises).then(() => res.send(htmlSegments.join("")));
+  if(fs.existsSync(cachedFile)){
+    res.sendFile(cachedFile);
   }else{
-    res.send(htmlSegments.join(""));
+    const promises = [];
+    const stream = fs.createWriteStream(cachedFile);
+    
+    stream.once("open", fd => {
+      const explore = folder => {
+        fs.readdirSync(folder).forEach(file => {
+          const fullPath = `${folder}/${file}`;
+
+          if (fs.lstatSync(fullPath).isDirectory()) {
+            explore(fullPath);
+          } else {
+            if (file.endsWith(".docx")) {
+              promises.push(
+                mammoth.convertToHtml({ path: fullPath }).then(function(result) {
+                  var html = result.value; 
+                  console.log(`Loaded ${fullPath}`);
+                  
+                  stream.write(`${html}\n`);
+                })
+              );
+            }
+          }
+        });
+      };
+      explore(`uploads/${userid}`);
+      
+      Promise.all(promises).then(() => {   
+        stream.end();
+        res.sendFile(cachedFile); 
+      });
+    });
   }
 });
 
