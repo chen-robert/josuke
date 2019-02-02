@@ -6,7 +6,7 @@
   <input id="searcher" onkeypress="search(this)" placeholder="Enter tagline">
   <p id="loading">Loading... Please wait!</p>
   <script>
-    $.get("/data", data => {
+    $.get("/api/data", data => {
       const el = document.createElement("div");
       el.innerHTML = data;
 

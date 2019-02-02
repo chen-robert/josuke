@@ -1,9 +1,11 @@
 body {
   font-family: "Lato", sans-serif;
   margin-top: 100px;
+  overflow-x: hidden;
 }
 * {
   font-family: inherit;
+  box-sizing: border-box;
 }
 #searcher{
   width: 80%;
