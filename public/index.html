@@ -2,6 +2,12 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
+  <style>
+    .subclass{
+      font-size: 12px;
+      margin: 0;
+    }
+  </style>
   <script>
     $.get("/data", data => {
       const el = document.createElement("div");
@@ -25,7 +31,15 @@
       tags.push(curr);
       
       const clean = text => text.split("T.").join("<br>T.");
-      const subText = a => `<p>${a.innerText}</p>`;
+      
+      const subText = a => {
+        let text = a.innerText;
+        text = text.replace(/((www\.|https?:\/\/)[^\s]+)/g, "<a href='$1'>$1</a>");
+        console.log(text);
+        
+        return `<p class="subtext">${text}</p>`;
+        
+      }
       const build = name => {
         document.body.insertAdjacentHTML(
           "beforeend",
@@ -33,7 +47,7 @@
 <h3>${name}</h3>
 ${tags
   .filter(a => a.innerText.toLowerCase().includes(name.toLowerCase()))
-  .map(a => `<strong>${clean(a.innerText)}</strong>${a.children.map(subText)}`).join("")}
+  .map(a => `<strong>${clean(a.innerText)}</strong>${a.children.map(subText).join("")}`).join("")}
 `
         );
       };
