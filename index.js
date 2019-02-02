@@ -85,4 +85,5 @@ app.get("/data", (req, res) => {
   }
 });
 app.get("/upload", (req, res) => res.sendFile(__dirname + "/public/upload.html"));
+app.get("/about", (req, res) => res.sendFile(__dirname + "/public/about.html"));
 app.listen(PORT, () => console.log(`Started server at port ${PORT}`));

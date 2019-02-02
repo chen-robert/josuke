@@ -1,0 +1,34 @@
+<head>
+  <title>Josuke</title>
+  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="navbar.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a class="navbar--link" href="/about" target="_blank">
+      About
+    </a>
+    <a class="navbar--link" href="/upload" target="_blank">
+      Upload
+    </a>
+    <a class="navbar--link" href="/" target="_blank">
+      Search
+    </a>
+  </nav>
+  <h1 class="doc-title">About</h1>
+  <main class="tag" style="display: block; margin: 0 25%; font-size: 20px; line-height: 35px; font-family: 'Roboto', sans-serif; ">
+    <strong>Description</strong>
+    <p>
+      Josuke is an <a href="https://opensource.org/licenses/MIT">open-source</a> project designed to make sifting through <a href="https://www.reddit.com/r/debatetrade/">/r/debatetrade/</a> prep a lot easier. It uses advanced heuristics to automatically parse uploaded files, and then uses that data to generate blockfiles.  
+      Josuke makes it so you don't have to read all your traded files. It will extract all relevant information for you immediately. 
+    </p>
+    <strong>Usage</strong>
+    <p>
+    To use, first upload your files <a href="/upload">here</a>. Then go <a href="/">here</a> to create a blockfile. Note that the better the files, the better the blockfiles will be.
+    </p>
+    <strong>Notes</strong>
+    <p>
+      We take security very seriously. All session information is <a href="https://en.wikipedia.org/wiki/HMAC">authenticated with a HMAC</a> ensuring that nobody except you will have access to your blockfiles. 
+    </p>
+  </main>
+</body>
