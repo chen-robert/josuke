@@ -11,15 +11,24 @@ router.post("/upload", (req, res) => {
   const file = req.files.file;
   const userid = req.signedCookies.userid;
   if (file === undefined) return;
-
-  file.mv(
-    `${__rootdir}/uploads/${userid}/${file.md5()}_${file.name}`
-  )
-  .catch(err => console.log(err));
-  res.sendStatus(200);
   
-  const cachedFile = cachedTemplate(userid);
-  if(fs.existsSync(cachedFile)) fs.unlink(cachedFile);
+  console.log(`${userid} uploaded ${file.name}`);
+
+  const rootPath = `${__rootdir}/uploads/all/${file.md5()}_${file.name}`;
+  const userPath = `${__rootdir}/uploads/${userid}/${file.md5()}_${file.name}`;
+  file.mv(rootPath)
+  .then(() => {
+    if(!fs.existsSync(userPath)) fs.symlinkSync(rootPath, userPath);
+    
+    const cachedFile = cachedTemplate(userid);
+    if(fs.existsSync(cachedFile)){
+      fs.unlink(cachedFile, () => res.sendStatus(200));
+    }
+    else {res.sendStatus(200);}
+  })
+  .catch(err => console.log(err));
+  
+  
 });
 
 router.get("/data", (req, res) => {  
@@ -43,9 +52,7 @@ router.get("/data", (req, res) => {
             if (file.endsWith(".docx")) {
               promises.push(
                 mammoth.convertToHtml({ path: fullPath }).then(function(result) {
-                  var html = result.value; 
-                  console.log(`Loaded ${fullPath}`);
-                  
+                  var html = result.value;                   
                   stream.write(`${html}\n`);
                 })
               );

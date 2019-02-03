@@ -6,6 +6,8 @@ const auth = (req, res, next) => {
     res.cookie("userid", id, { maxAge: 365 * 24 * 60 * 60 * 1000, httpOnly: true, signed: true });
     
     fs.mkdirSync(`uploads/${id}`);
+    
+    console.log(`${id} joined`);
   }
   next();
 };
