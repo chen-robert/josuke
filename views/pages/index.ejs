@@ -5,6 +5,7 @@
   <% include ../partials/navbar %>
   <input id="searcher" onkeypress="search(this)" placeholder="Enter tagline">
   <p id="loading">Loading... Please wait!</p>
+  <main id="results"></main>
   <script>
     $.get("/api/data", data => {
       const el = document.createElement("div");
@@ -49,8 +50,7 @@
       `;
       }
       const build = name => {
-        document.body.insertAdjacentHTML(
-          "beforeend",
+        $("#results").html(
 `
 <h3 id="section-${name}" class="section-title">${name}</h3>
 ${tags
@@ -69,8 +69,6 @@ ${tags
         elem.value = "";
         if(query.trim() === "")return;
         build(query);
-        
-        location.hash = `#section-${query}`;
       }
     };
 
