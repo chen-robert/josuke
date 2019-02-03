@@ -55,7 +55,9 @@
 <h3 id="section-${name}" class="section-title">${name}</h3>
 ${tags
   .filter(a => a.innerText.toLowerCase().includes(name.toLowerCase()))
-  .map(buildTag).join("")}
+  .map(buildTag)
+  .filter((v, i, a) => a.indexOf(v) === i)
+  .join("")}
 `
         );
       };
