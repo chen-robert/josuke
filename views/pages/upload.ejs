@@ -2,11 +2,13 @@
   <% include ../partials/head %>
   <link rel="stylesheet" href="dropzone.css">
   <script src="dropzone.js"></script>
+  <link rel="stylesheet" href="upload.css">
 </head>
 <body>
   <% include ../partials/navbar %>
-  <h1 class="doc-title">Upload Files</h1>
-  <form id="dropzone" class="dropzone"></form>
+  <form id="dropzone" class="dropzone">
+    <div class="dz-message">Drop file or folder to upload</div>
+  </form>
   <script>
     var myDropzone = new Dropzone(
           "#dropzone",
@@ -16,5 +18,4 @@
           }
     );
   </script>
-  <p>After you've uploaded some cards, go back to <a href="/">the original page</a> to create a new blockfile.<p>
 </body>

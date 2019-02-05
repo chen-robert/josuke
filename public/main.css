@@ -7,48 +7,48 @@ body {
   font-family: inherit;
   box-sizing: border-box;
 }
-#searcher{
+#searcher {
   width: 80%;
   padding: 15px;
   margin: 0 10%;
   font-size: 20px;
 }
 
-.doc-title{
+.doc-title {
   margin: 35px;
   text-align: center;
   display: block;
 }
 
-.doc-title > button{
+.doc-title > button {
   padding: 10px 24px;
 }
 
-.subclass{
+.subclass {
   font-size: 12px;
   margin: 0;
 }
 
-.subtext-container{
+.subtext-container {
   max-height: 25vh;
   overflow-y: auto;
-  
+
   overflow-wrap: break-word;
   font-family: "Roboto", sans-serif;
 }
 
-.subtext-wrapper{
+.subtext-wrapper {
   margin: 20px;
   padding: 20px;
   border: 1px solid #ccc;
 }
 
-.section-title{
+.section-title {
   font-size: 25px;
   text-align: center;
 }
 
-.tag{
+.tag {
   line-height: 25px;
   padding: 0 20px;
   display: inline-block;
@@ -57,4 +57,3 @@ body {
   margin: 20px;
   padding: 20px;
 }
-    

@@ -1,25 +1,25 @@
-.navbar{
+.navbar {
   position: absolute;
   top: 0;
   left: 0;
-  
+
   width: 100vw;
 
-  padding: 25px;  
+  padding: 25px;
   display: flex;
 }
 
-.navbar--link{
+.navbar--link {
   margin: 0 50px;
   text-decoration: none;
   font-size: 20px;
   color: #444;
   position: relative;
   opacity: 0.5;
-  
+
   transition: opacity 250ms;
 }
 
-.navbar--link:hover{
+.navbar--link:hover {
   opacity: 1;
 }
