@@ -35,6 +35,8 @@ body {
 
   overflow-wrap: break-word;
   font-family: "Roboto", sans-serif;
+  font-size: 20px;
+  line-height: 40px;
 }
 
 .overflown{
@@ -96,4 +98,24 @@ body {
   background-color: #eee;
   margin: 20px;
   padding: 20px;
+}
+
+#download-button > button{  
+  padding: 10px 15px;
+  border: 0;
+  cursor: pointer;
+  font-size: 20px;
+  
+  transition: background-color 250ms;
+}
+
+#download-button > button:hover{
+  background-color: #aaa;
+}
+
+#download-button{
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  text-decoration: none;
 }

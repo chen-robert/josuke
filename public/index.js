@@ -1,5 +1,6 @@
 $.fn.overflown=function(){var e=this[0];return e.scrollHeight>e.clientHeight||e.scrollWidth>e.clientWidth;}
 
+$.get("/main.css", style => {
 $.get("/api/data", data => {
   const el = document.createElement("div");
   el.innerHTML = data;
@@ -56,16 +57,19 @@ ${tags
     $(".subtext-container").each((i, elem) => {
       if($(elem).overflown()){
         $(elem).addClass("overflown");
-        console.log("HI");
       }
     });
     $(".subtext-container").click(function(){
       $(this).css("max-height", "initial");
       $(this).removeClass("overflown");
     });
+    
+    $("#download-button").attr("href", `data:text/html,<style>${style.replace(/overflown/g, "removed").replace(/max-height/g, "removed")}</style><body>${$("#results").html()}</body>`);
+    $("#download-button").attr("download", `Blocks_${name} (${$(".tag").length} pages).html`);
   };
   window.build = build;
   $("#loading").hide();
+});
 });
 
 const search = elem => {
