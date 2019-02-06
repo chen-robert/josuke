@@ -37,6 +37,11 @@ body {
   font-family: "Roboto", sans-serif;
 }
 
+.subtext-container li{
+  list-style-type: decimal;
+  margin: 15px 0;
+}
+
 .subtext-wrapper {
   margin: 20px;
   padding: 20px;

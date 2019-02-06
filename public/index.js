@@ -4,13 +4,14 @@ $.get("/api/data", data => {
 
   window.el = el;
 
-  const children = Array.from(el.children);
+  const children = Array.from(el.children)
+    .filter(el => !["H1", "H2"].includes(el.tagName));
   const tags = [];
 
   let curr = { innerText: "", children: [] };
   for (let i = 0; i < children.length; i++) {
     const a = children[i];
-    if (a.tagName !== "P") {
+    if (["H3"].includes(a.tagName)) {
       tags.push(curr);
       curr = { innerText: a.innerText, children: [] };
     } else {
@@ -20,10 +21,7 @@ $.get("/api/data", data => {
   tags.push(curr);
 
   const subText = a => {
-    let text = a.innerText;
-    text = text.replace(/((www\.|https?:\/\/)[^\s]+)/g, "<a href='$1'>$1</a>");
-
-    return `<p class="subtext">${text}</p>`;
+    return `<p class="subtext">${a.innerHTML}</p>`;
   };
   const buildTag = a => {
     return `
