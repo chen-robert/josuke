@@ -30,7 +30,7 @@ body {
 }
 
 .subtext-container {
-  max-height: 25vh;
+  max-height: 50vh;
   overflow-y: auto;
 
   overflow-wrap: break-word;
@@ -40,6 +40,30 @@ body {
 .subtext-container li{
   list-style-type: decimal;
   margin: 15px 0;
+}
+
+.subtext-container *{
+  color: initial;
+}
+
+.subtext-container a{
+  color: #5495ff;
+  text-decoration: none;
+  
+  transition: color 250ms;
+}
+
+.subtext-container strong{
+  font-weight: 400;
+}
+
+.subtext-container a:hover{
+  color: #287aff;
+  text-decoration: underline;
+}
+
+.subtext-container p{
+  color: #ccc;
 }
 
 .subtext-wrapper {
