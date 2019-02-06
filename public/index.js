@@ -1,3 +1,5 @@
+$.fn.overflown=function(){var e=this[0];return e.scrollHeight>e.clientHeight||e.scrollWidth>e.clientWidth;}
+
 $.get("/api/data", data => {
   const el = document.createElement("div");
   el.innerHTML = data;
@@ -25,12 +27,12 @@ $.get("/api/data", data => {
   };
   const buildTag = a => {
     return `
-  <strong class="tag">${a.innerText.split("T.").join("<br>T.")}</strong>
+  <strong class="tag wow fadeInUp" data-wow-duration="0.5s">${a.innerText.split("T.").join("<br>T.")}</strong>
   ${
     a.children.length === 0
       ? "<br>"
       : `
-  <section class="subtext-wrapper">
+  <section class="subtext-wrapper wow fadeInUp" data-wow-duration="0.5s">
     <div class="subtext-container">
       ${a.children.map(subText).join("")}
     </div>
@@ -50,6 +52,17 @@ ${tags
   .join("")}
 `
     );
+    
+    $(".subtext-container").each((i, elem) => {
+      if($(elem).overflown()){
+        $(elem).addClass("overflown");
+        console.log("HI");
+      }
+    });
+    $(".subtext-container").click(function(){
+      $(this).css("max-height", "initial");
+      $(this).removeClass("overflown");
+    });
   };
   window.build = build;
   $("#loading").hide();

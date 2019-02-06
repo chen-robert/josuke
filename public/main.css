@@ -31,10 +31,21 @@ body {
 
 .subtext-container {
   max-height: 50vh;
-  overflow-y: auto;
+  overflow-y: hidden;
 
   overflow-wrap: break-word;
   font-family: "Roboto", sans-serif;
+}
+
+.overflown{
+  cursor: pointer;
+  opacity: 0.2;
+  
+  transition: opacity 250ms;
+}
+
+.overflown:hover{
+  opacity: 1;
 }
 
 .subtext-container li{
