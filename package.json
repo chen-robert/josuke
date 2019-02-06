@@ -4,7 +4,7 @@
   "description": "A tool for quickly searching through block files.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chen-robert/doc-searcher.git"
+    "url": "git+https://github.com/chen-robert/josuke.git"
   },
   "main": "index.js",
   "scripts": {
