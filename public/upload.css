@@ -4,10 +4,8 @@
 }
 
 #dropzone{
-  height: 100vh;
+  min-height: 50vh;
   width: 100%;
-  
-  flex: 1;
 }
 
 body{

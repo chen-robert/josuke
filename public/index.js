@@ -21,7 +21,7 @@ $.get("/api/data", data => {
   tags.push(curr);
 
   const subText = a => {
-    return `<p class="subtext">${a.innerHTML}</p>`;
+    return `${a.outerHTML}`;
   };
   const buildTag = a => {
     return `
