@@ -28,12 +28,12 @@ $.get("/api/data", data => {
   };
   const buildTag = a => {
     return `
-  <strong class="tag wow fadeInUp" data-wow-duration="0.5s">${a.innerText.split("T.").join("<br>T.")}</strong>
+  <strong id="tag-${btoa(a.innerText.split("").map(a => a.charCodeAt(0)).join(","))}" class="tag wow fadeInUp" data-wow-duration="0.5s">${a.innerText.split("T.").join("<br>T.")}</strong>
   ${
     a.children.length === 0
       ? "<br>"
       : `
-  <section class="subtext-wrapper wow fadeInUp" data-wow-duration="0.5s">
+  <section class="subtext-wrapper">
     <div class="subtext-container">
       ${a.children.map(subText).join("")}
     </div>
@@ -42,27 +42,53 @@ $.get("/api/data", data => {
   }
   `;
   };
+  
+  const buildOutline = a => {
+    let ret = "";
+    let explore = child => {
+      if(child.tagName === "STRONG" || child.tagName === "H4")ret += child.outerHTML + " ";
+      else Array.from(child.children).forEach(explore);
+    }
+    Array.from(a.children).forEach(explore);
+    
+    return `<div>
+      <a href="#tag-${btoa(a.innerText.split("").map(a => a.charCodeAt(0)).join(","))}"><strong class="tag tag__link wow fadeInUp" data-wow-duration="0.5s">${a.innerText}</strong></a>
+      <small class="outline--teaser">[Preview]<br> ${ret}</small>
+    </div>`;
+  }
+  
+  const shouldKeep = a => {
+    let ret = "";
+    let explore = child => {
+      if(child.tagName === "STRONG" || child.tagName === "H4")ret += child.outerHTML;
+      else Array.from(child.children).forEach(explore);
+    }
+    Array.from(a.children).forEach(explore);
+    
+    return ret.length !== 0;    
+  }
+  
   const build = name => {
+    const currTags = tags
+      .filter(a => a.innerText.toLowerCase().includes(name.toLowerCase()))
+      .filter(a => a.children.length !== 0)
+      .filter(shouldKeep);
     $("#results").html(
       `
 <h3 id="section-${name}" class="section-title">${name}</h3>
-${tags
-  .filter(a => a.innerText.toLowerCase().includes(name.toLowerCase()))
+<h3 class="section-title section-title__sub">Outline</h3>
+${currTags
+  .map(buildOutline)
+  .join("")}
+  
+  <hr>
+<h3 class="section-title section-title__sub">Cards</h3>
+  
+${currTags
   .map(buildTag)
-  .filter((v, i, a) => a.indexOf(v) === i)
   .join("")}
 `
     );
-    
-    $(".subtext-container").each((i, elem) => {
-      if($(elem).overflown()){
-        $(elem).addClass("overflown");
-      }
-    });
-    $(".subtext-container").click(function(){
-      $(this).css("max-height", "initial");
-      $(this).removeClass("overflown");
-    });
     
     $("#download-button").attr("href", `data:text/html,<style>${style.replace(/overflown/g, "removed").replace(/max-height/g, "removed")}</style><body>${$("#results").html()}</body>`);
     $("#download-button").attr("download", `Blocks_${name} (${$(".tag").length} pages).html`);

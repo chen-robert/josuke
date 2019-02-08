@@ -30,24 +30,10 @@ body {
 }
 
 .subtext-container {
-  max-height: 50vh;
-  overflow-y: hidden;
-
   overflow-wrap: break-word;
   font-family: "Roboto", sans-serif;
   font-size: 20px;
   line-height: 40px;
-}
-
-.overflown{
-  cursor: pointer;
-  opacity: 0.2;
-  
-  transition: opacity 250ms;
-}
-
-.overflown:hover{
-  opacity: 1;
 }
 
 .subtext-container li{
@@ -86,8 +72,19 @@ body {
 }
 
 .section-title {
-  font-size: 25px;
+  font-size: 55px;
   text-align: center;
+  margin: 50px 100px;
+  padding: 10px;
+  
+  border: 1px solid black;
+}
+
+.section-title__sub{
+  font-size: 30px;
+  color: #333;
+  
+  border: none;
 }
 
 .tag {
@@ -98,6 +95,12 @@ body {
   background-color: #eee;
   margin: 20px;
   padding: 20px;
+  
+  color: initial;
+}
+
+.tag__link:hover{
+  background-color: #ddd;
 }
 
 #download-button > button{  
@@ -118,4 +121,14 @@ body {
   top: 15px;
   right: 15px;
   text-decoration: none;
+}
+
+.outline--teaser{
+  display: block;
+  margin: 0 50px;
+  padding: 15px;
+  
+  overflow-y: hidden;
+  max-height: 25vh;
+  background-color: #eee;
 }
