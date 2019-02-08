@@ -26,9 +26,14 @@ $.get("/api/data", data => {
   const subText = a => {
     return `${a.outerHTML}`;
   };
+  
+  const getId = a => {
+    return btoa(a.innerText.replace(/\s/g, "").split("").map(a => a.charCodeAt(0)).join(","));
+  }
+  
   const buildTag = a => {
     return `
-  <strong id="tag-${btoa(a.innerText.split("").map(a => a.charCodeAt(0)).join(","))}" class="tag wow fadeInUp" data-wow-duration="0.5s">${a.innerText.split("T.").join("<br>T.")}</strong>
+  <strong id="tag-${getId(a)}" class="tag" data-wow-duration="0.5s">${a.innerText.split("T.").join("<br>T.")}</strong>
   ${
     a.children.length === 0
       ? "<br>"
@@ -52,8 +57,8 @@ $.get("/api/data", data => {
     Array.from(a.children).forEach(explore);
     
     return `<div>
-      <a href="#tag-${btoa(a.innerText.split("").map(a => a.charCodeAt(0)).join(","))}"><strong class="tag tag__link wow fadeInUp" data-wow-duration="0.5s">${a.innerText}</strong></a>
-      <small class="outline--teaser">[Preview]<br> ${ret}</small>
+      <a href="#tag-${getId(a)}"><strong class="tag tag__link wow fadeInUp" data-wow-duration="0.5s">${a.innerText}</strong></a>
+      <small class="outline--teaser wow fadeInUp"><br> ${ret}</small>
     </div>`;
   }
   
@@ -68,6 +73,15 @@ $.get("/api/data", data => {
     return ret.length !== 0;    
   }
   
+  const score = text => {
+    let ret = 0;
+    
+    ret += 1000 * (text.match(/<h4>/ig) || []).length;
+    ret += (text.match(/delink/ig) || []).length;
+    
+    return ret;
+  }
+  
   const build = name => {
     const currTags = tags
       .filter(a => a.innerText.toLowerCase().includes(name.toLowerCase()))
@@ -79,6 +93,8 @@ $.get("/api/data", data => {
 <h3 class="section-title section-title__sub">Outline</h3>
 ${currTags
   .map(buildOutline)
+  .filter((value, index, self) => self.indexOf(value) === index)
+  .sort((a, b) => score(b) - score(a))
   .join("")}
   
   <hr>
